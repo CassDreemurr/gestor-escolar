@@ -1,30 +1,66 @@
-# Gestor escolar para crear la matrícula del estudiante, almacenar el valor total de sus calificaciones y obtener su promedio.
+"""
+Gestor Escolar
 
-#Librerias adicionales de python para mejorar el código y la salida de la consola.
+Este programa permite crear la matrícula de un estudiante,
+registrar sus calificaciones y calcular su promedio.
+Incluye un menú interactivo en consola para gestionar la información.
+"""
+
+# Librerías adicionales para limpiar la consola y generar matrículas aleatorias
 from os import system
 import random
 
-#Creamos la clase estudiante y sus atributos
+
 class Estudiante:
+    """
+    Clase que representa a un estudiante dentro del sistema escolar.
+
+    Permite:
+    - Almacenar nombre y apellido.
+    - Generar una matrícula automática.
+    - Registrar calificaciones.
+    - Calcular el promedio.
+    """
 
     def __init__(self, nombre, apellido):
+        """
+        Constructor de la clase Estudiante.
+
+        Parámetros:
+        nombre (str): Nombre del estudiante.
+        apellido (str): Apellido del estudiante.
+        """
         self.nombre = nombre.capitalize()
         self.apellido = apellido.capitalize()
         self.matricula = 'OWL' + str(random.randrange(100, 200))
         self.calificaciones = []
 
-    # Agregar calificación a la lista
     def agregar_calificacion(self, nota):
+        """
+        Agrega una nueva calificación a la lista del estudiante.
+
+        Parámetros:
+        nota (float): Calificación que se desea registrar.
+        """
         self.calificaciones.append(nota)
 
-    # Calcular promedio
     def calcular_promedio(self):
+        """
+        Calcula y devuelve el promedio de las calificaciones registradas.
+
+        Retorna:
+        float: Promedio redondeado a un decimal.
+               Si no hay calificaciones, devuelve 0.
+        """
         if len(self.calificaciones) == 0:
             return 0
         return round(sum(self.calificaciones) / len(self.calificaciones), 1)
 
-    # Mostrar calificaciones
     def mostrar_calificaciones(self):
+        """
+        Muestra en pantalla todas las calificaciones registradas
+        del estudiante.
+        """
         system('clear')
         if not self.calificaciones:
             print("Este alumno no tiene calificaciones registradas.\n")
@@ -35,15 +71,24 @@ class Estudiante:
         input('Presione ENTER para continuar...')
         system('clear')
 
-    # Metodo especial de string para mostrar información del objeto
     def __str__(self):
+        """
+        Método especial que define cómo se muestra el objeto
+        cuando se imprime en pantalla.
+        """
         return (f"\nEstudiante: {self.nombre} {self.apellido}"
                 f"\nMatrícula: {self.matricula}"
                 f"\nPromedio actual: {self.calcular_promedio()}\n")
 
 
-# Función para crear estudiante y devolverlo como tipo objeto
 def crear_estudiante():
+    """
+    Solicita al usuario los datos personales y crea
+    un objeto de tipo Estudiante.
+
+    Retorna:
+    Estudiante: Objeto creado con los datos ingresados.
+    """
     system('clear')
     print("Ingrese los datos del estudiante:\n")
     nombre = input("Nombre: ")
@@ -52,10 +97,19 @@ def crear_estudiante():
     return Estudiante(nombre, apellido)
 
 
-# Programa principal
 def main():
+    """
+    Función principal que controla el flujo del programa.
 
-    # Se crea al estudiante
+    Muestra un menú interactivo que permite:
+    - Consultar información del estudiante.
+    - Agregar calificaciones.
+    - Mostrar calificaciones.
+    - Calcular promedio.
+    - Salir del programa.
+    """
+
+    # Se crea el estudiante al iniciar el programa
     estudiante = crear_estudiante()
 
     menu = """
@@ -67,11 +121,11 @@ Menú de opciones
 5. Cerrar programa
 """
 
-    # Empieza el loop de inicio
+    # Bucle principal del programa
     while True:
         print(menu)
 
-        # pedir una opción válida al usuario
+        # Validación de entrada del usuario
         try:
             eleccion = int(input("Elija una opción (1-5): "))
         except ValueError:
@@ -80,14 +134,14 @@ Menú de opciones
             system('clear')
             continue
 
-        # Se muestra la información del estudiante
+        # Opción 1: Mostrar información del estudiante
         if eleccion == 1:
             system('clear')
             print(estudiante)
             input('Presione ENTER para continuar...')
             system('clear')
 
-        # Se añade una nota a la lista de calificaciones si esta es válida
+        # Opción 2: Agregar una nueva calificación
         elif eleccion == 2:
             system('clear')
             try:
@@ -95,15 +149,13 @@ Menú de opciones
                 estudiante.agregar_calificacion(round(nota, 1))
                 print("Calificación agregada.\n")
             except ValueError:
-                system('clear')
                 print("Debe ingresar un número válido.\n")
 
-
-        # Se muestra la lista de elementos en calificaciones
+        # Opción 3: Mostrar lista de calificaciones
         elif eleccion == 3:
             estudiante.mostrar_calificaciones()
 
-        # Se calcula el promedio
+        # Opción 4: Mostrar promedio actual
         elif eleccion == 4:
             system('clear')
             promedio = estudiante.calcular_promedio()
@@ -111,17 +163,18 @@ Menú de opciones
             input('Presione ENTER para continuar...')
             system('clear')
 
-        # Se cancela el loop que ejecuta el programa y este termina
+        # Opción 5: Finalizar programa
         elif eleccion == 5:
             system('clear')
             print("Programa cerrado.")
             break
 
-        # Mensaje de error si "eleccion" tiene un valor no esperado
+        # Control de opciones inválidas
         else:
             system('clear')
             print("Opción inválida.\n")
 
 
-#Ejecutamos el programa principal
+# Punto de entrada del programa
 main()
+
